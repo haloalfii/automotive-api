@@ -2,10 +2,22 @@ import Listing from "../models/listing.model.js";
 
 export const createListing = async (req, res) => {
   try {
-    const data = await Listing.create(req.body);
-    res.status(201).json(data);
+    const payload = {
+      ...req.body,
+      status: req.body.status || "available",
+    };
+
+    const data = await Listing.create(payload);
+
+    return res.status(201).json({
+      success: true,
+      data,
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -16,6 +28,8 @@ export const getListings = async (req, res) => {
       min_price,
       max_price,
       fuel_type,
+      transmission,
+      color,
       cursor,
       limit = 10,
     } = req.query;
@@ -36,7 +50,15 @@ export const getListings = async (req, res) => {
     }
 
     if (fuel_type) {
-      filter["attributes.fuel_type"] = fuel_type;
+      filter.fuel_type = fuel_type;
+    }
+
+    if (transmission) {
+      filter.transmission = transmission;
+    }
+
+    if (color) {
+      filter.color = color;
     }
 
     if (cursor) {
@@ -47,12 +69,16 @@ export const getListings = async (req, res) => {
       .sort({ _id: -1 })
       .limit(Number(limit));
 
-    res.json({
+    return res.json({
+      success: true,
       data: listings,
       next_cursor: listings.length ? listings[listings.length - 1]._id : null,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -61,37 +87,86 @@ export const getListingById = async (req, res) => {
     const data = await Listing.findById(req.params.id);
 
     if (!data || data.deleted_at) {
-      return res.status(404).json({ message: "Listing not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Listing not found",
+      });
     }
 
-    res.json(data);
+    return res.json({
+      success: true,
+      data,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
 export const updateListing = async (req, res) => {
   try {
-    const data = await Listing.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const updateData = { ...req.body };
 
-    res.json(data);
+    delete updateData._id;
+    delete updateData.deleted_at;
+
+    const data = await Listing.findByIdAndUpdate(
+      req.params.id,
+      { $set: updateData },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    if (!data) {
+      return res.status(404).json({
+        success: false,
+        message: "Listing not found",
+      });
+    }
+
+    return res.json({
+      success: true,
+      data,
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
 export const deleteListing = async (req, res) => {
   try {
-    await Listing.findByIdAndUpdate(req.params.id, {
-      status: "removed",
-      deleted_at: new Date(),
-    });
+    const data = await Listing.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: "removed",
+        deleted_at: new Date(),
+      },
+      { new: true },
+    );
 
-    res.json({ message: "Listing removed" });
+    if (!data) {
+      return res.status(404).json({
+        success: false,
+        message: "Listing not found",
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: "Listing removed",
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
