@@ -157,6 +157,14 @@ http://localhost:3000
 
 ---
 
+# 📡 Rarilway URL
+
+```bash
+https://automotive-api-production.up.railway.app/
+```
+
+---
+
 # 📡 API Endpoints
 
 ## 🚗 Listings
