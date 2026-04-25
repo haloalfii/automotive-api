@@ -1,4 +1,5 @@
 import Listing from "../models/listing.model.js";
+import parseSearchQuery from "../utils/parseSearchQuery.js";
 
 export const createListing = async (req, res) => {
   try {
@@ -184,12 +185,41 @@ export const searchListings = async (req, res) => {
       sort = "newest",
     } = req.query;
 
-    const filter = {
+    let filter = {
       deleted_at: null,
+      status: "available",
     };
 
     if (q) {
-      filter.$text = { $search: q };
+      const parsed = parseSearchQuery(q);
+
+      const regex = new RegExp(q, "i");
+
+      const hasStructured = parsed.make || parsed.year || parsed.fuel_type;
+
+      if (hasStructured) {
+        const structuredFilter = {};
+
+        if (parsed.make) {
+          structuredFilter.make = new RegExp(parsed.make, "i");
+        }
+
+        if (parsed.year) {
+          structuredFilter.year = parsed.year;
+        }
+
+        if (parsed.fuel_type) {
+          structuredFilter.fuel_type = parsed.fuel_type;
+        }
+
+        Object.assign(filter, structuredFilter);
+      } else {
+        filter.$or = [
+          { make: regex },
+          { model: regex },
+          { search_keywords: regex },
+        ];
+      }
     }
 
     if (category) {
@@ -208,9 +238,7 @@ export const searchListings = async (req, res) => {
 
     let sortOption = {};
 
-    if (q) {
-      sortOption = { score: { $meta: "textScore" } };
-    } else if (sort === "price_asc") {
+    if (sort === "price_asc") {
       sortOption.price = 1;
     } else if (sort === "price_desc") {
       sortOption.price = -1;
@@ -220,15 +248,10 @@ export const searchListings = async (req, res) => {
 
     const skip = (page - 1) * limit;
 
-    const query = Listing.find(
-      filter,
-      q ? { score: { $meta: "textScore" } } : {},
-    )
+    const data = await Listing.find(filter)
       .sort(sortOption)
       .skip(skip)
       .limit(Number(limit));
-
-    const data = await query;
 
     const total = await Listing.countDocuments(filter);
 
@@ -258,21 +281,24 @@ export const suggestListings = async (req, res) => {
       return res.json({ success: true, data: [] });
     }
 
-    const keywords = q.split(" ").filter(Boolean);
-    const regex = new RegExp(keywords.join("|"), "i");
+    const regex = new RegExp(q, "i");
 
     const data = await Listing.find(
       {
         deleted_at: null,
-        title: { $regex: regex },
+        $or: [{ make: regex }, { model: regex }, { search_keywords: regex }],
       },
       {
-        title: 1,
+        make: 1,
+        model: 1,
         _id: 0,
       },
     ).limit(10);
 
-    const suggestions = [...new Set(data.map((i) => i.title))];
+    // format suggestion better
+    const suggestions = [
+      ...new Set(data.map((item) => `${item.make} ${item.model}`)),
+    ];
 
     return res.json({
       success: true,
