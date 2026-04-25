@@ -89,6 +89,7 @@ Create a `.env` file in the root directory:
 ```env
 PORT=3000
 MONGO_URI=mongodb://127.0.0.1:27017/automotive
+```
 
 ---
 
@@ -99,6 +100,7 @@ MONGO_URI=mongodb://127.0.0.1:27017/automotive
 ```bash
 git clone https://github.com/haloalfii/automotive-api
 cd automotive-api
+```
 
 ---
 
@@ -106,6 +108,7 @@ cd automotive-api
 
 ```bash
 npm install
+```
 
 ---
 
@@ -116,6 +119,7 @@ Create `.env` file:
 ```.env
 PORT=3000
 MONGO_URI=mongodb://127.0.0.1:27017/automotive
+```
 
 ---
 
