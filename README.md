@@ -25,8 +25,7 @@ A RESTful API built with Node.js, Express, and MongoDB (Mongoose) for managing v
   - routes/
   - seed/
   - utils/
-  app.js
-server.js
+- app.js
 
 ---
 
