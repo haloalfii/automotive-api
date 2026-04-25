@@ -24,6 +24,6 @@ app.get("/", (req, res) => {
   });
 });
 
-// app.use("/api/listings", listingRoute);
+app.use("/api/listings", listingRoute);
 
 export default app;
