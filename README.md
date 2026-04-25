@@ -84,8 +84,9 @@ A RESTful API built with Node.js, Express, and MongoDB (Mongoose) for managing v
 
 # ⚙️ Environment Variables
 
-Create a `.env` file in root directory:
+Create a `.env` file in the root directory:
 
+```env
 PORT=3000
 MONGO_URI=mongodb://127.0.0.1:27017/automotive
 
@@ -95,6 +96,7 @@ MONGO_URI=mongodb://127.0.0.1:27017/automotive
 
 ## 1. Clone Repository
 
+```bash
 git clone https://github.com/haloalfii/automotive-api
 cd automotive-api
 
@@ -102,6 +104,7 @@ cd automotive-api
 
 ## 2. Install Dependencies
 
+```bash
 npm install
 
 ---
@@ -110,6 +113,7 @@ npm install
 
 Create `.env` file:
 
+```.env
 PORT=3000
 MONGO_URI=mongodb://127.0.0.1:27017/automotive
 
