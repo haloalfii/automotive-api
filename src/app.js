@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
-import testRoute from "./routes/test.route.js";
+import listingRoute from "./routes/listing.route.js";
 
 dotenv.config();
 
@@ -19,6 +19,6 @@ app.get("/", (req, res) => {
   });
 });
 
-app.use("/api", testRoute);
+app.use("/api/listings", listingRoute);
 
 export default app;
