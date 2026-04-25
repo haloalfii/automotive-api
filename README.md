@@ -127,15 +127,30 @@ MONGO_URI=mongodb://127.0.0.1:27017/automotive
 
 Make sure MongoDB is running:
 
+```bash
 mongod
+```
 
 or use MongoDB Atlas.
 
 ---
 
-## 5. Run Development Server
+## 5. Seeding 
 
+```bash
+node src/seed/listing.seed.js 
+```
+
+Server will run at:
+http://localhost:3000
+
+---
+
+## 6. Run Development Server
+
+```bash
 npm run dev
+```
 
 Server will run at:
 http://localhost:3000
