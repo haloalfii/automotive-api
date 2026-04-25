@@ -17,13 +17,15 @@ A RESTful API built with Node.js, Express, and MongoDB (Mongoose) for managing v
 
 # 📁 Project Structure (High Level)
 
-src/
-controllers/
-models/
-routes/
-middlewares/
-config/
-seed/
+- src/
+  - config/
+  - controllers/
+  - middleware/
+  - models/
+  - routes/
+  - seed/
+  - utils/
+  app.js
 server.js
 
 ---
