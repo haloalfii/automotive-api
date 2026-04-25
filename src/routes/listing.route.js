@@ -5,9 +5,14 @@ import {
   getListingById,
   updateListing,
   deleteListing,
+  searchListings,
+  suggestListings
 } from "../controllers/listing.controller.js";
 
 const router = express.Router();
+
+router.get("/search", searchListings);
+router.get("/search/suggest", suggestListings);
 
 router.post("/", createListing);
 router.get("/", getListings);
