@@ -149,7 +149,9 @@ listingSchema.index({
 
 listingSchema.pre("save", function (next) {
   if (!this.slug) {
-    this.slug = slugify(`${this.make} ${this.model} ${this.year}`, {
+    const random = Math.floor(Math.random() * 100000);
+
+    this.slug = slugify(`${this.make}-${this.model}-${this.year}-${random}`, {
       lower: true,
     });
   }
@@ -165,7 +167,9 @@ listingSchema.pre("findOneAndUpdate", function (next) {
     const year = update.year;
 
     if (make && model && year) {
-      update.slug = slugify(`${make} ${model} ${year}`, {
+      const random = Math.floor(Math.random() * 100000);
+
+      update.slug = slugify(`${make}-${model}-${year}-${random}`, {
         lower: true,
       });
     }

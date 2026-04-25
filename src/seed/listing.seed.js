@@ -6,282 +6,102 @@ import Listing from "../models/listing.model.js";
 import connectDB from "../config/db.js";
 
 const listingsSeed = [
-  {
-    make: "Toyota",
-    model: "Avanza",
-    year: 2020,
-    price: 200000000,
-    mileage: 85000,
-    condition: "used",
-    transmission: "automatic",
-    fuel_type: "petrol",
-    color: "white",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Jakarta",
-      province: "DKI Jakarta",
-      coordinates: {
-        type: "Point",
-        coordinates: [106.8451, -6.2146],
-      },
-    },
-    images: [],
-    search_keywords: ["toyota", "avanza", "mpv"],
-  },
+  ...Array.from({ length: 60 }).map((_, i) => {
+    const makes = [
+      "Toyota",
+      "Honda",
+      "Suzuki",
+      "Mitsubishi",
+      "Daihatsu",
+      "Hyundai",
+      "BMW",
+      "Mercedes-Benz",
+    ];
+    const models = [
+      "Avanza",
+      "Innova",
+      "Fortuner",
+      "Civic",
+      "CR-V",
+      "Xpander",
+      "Xenia",
+      "Swift",
+      "XL7",
+      "Creta",
+      "320i",
+      "C200",
+    ];
+    const fuel = ["petrol", "diesel"];
+    const transmission = ["automatic", "manual"];
+    const colors = ["white", "black", "silver", "red", "blue", "grey"];
 
-  {
-    make: "Toyota",
-    model: "Innova",
-    year: 2021,
-    price: 320000000,
-    mileage: 60000,
-    condition: "used",
-    transmission: "automatic",
-    fuel_type: "diesel",
-    color: "black",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Bandung",
-      province: "Jawa Barat",
-      coordinates: {
-        type: "Point",
-        coordinates: [107.6098, -6.9147],
-      },
-    },
-    images: [],
-    search_keywords: ["toyota", "innova", "mpv"],
-  },
+    const make = makes[Math.floor(Math.random() * makes.length)];
+    const model = models[Math.floor(Math.random() * models.length)];
 
-  {
-    make: "Toyota",
-    model: "Fortuner",
-    year: 2022,
-    price: 550000000,
-    mileage: 30000,
-    condition: "used",
-    transmission: "automatic",
-    fuel_type: "diesel",
-    color: "white",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Jakarta",
-      province: "DKI Jakarta",
-      coordinates: {
-        type: "Point",
-        coordinates: [106.8272, -6.1751],
+    return {
+      make,
+      model,
+      year: 2018 + Math.floor(Math.random() * 7),
+      price: 150000000 + Math.floor(Math.random() * 900000000),
+      mileage: 10000 + Math.floor(Math.random() * 90000),
+      condition: Math.random() > 0.3 ? "used" : "new",
+      transmission:
+        transmission[Math.floor(Math.random() * transmission.length)],
+      fuel_type: fuel[Math.floor(Math.random() * fuel.length)],
+      color: colors[Math.floor(Math.random() * colors.length)],
+      category: { id: "car", name: "Car" },
+      location: {
+        city: "Jakarta",
+        province: "DKI Jakarta",
+        coordinates: {
+          type: "Point",
+          coordinates: [
+            106.8456 + Math.random() * 0.01,
+            -6.2088 + Math.random() * 0.01,
+          ],
+        },
       },
-    },
-    images: [],
-    search_keywords: ["toyota", "fortuner", "suv"],
-  },
+      images: [],
+      search_keywords: [make.toLowerCase(), model.toLowerCase(), "car"],
+    };
+  }),
 
-  {
-    make: "Suzuki",
-    model: "Swift",
-    year: 2019,
-    price: 180000000,
-    mileage: 70000,
-    condition: "used",
-    transmission: "manual",
-    fuel_type: "petrol",
-    color: "red",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Surabaya",
-      province: "Jawa Timur",
-      coordinates: {
-        type: "Point",
-        coordinates: [112.7521, -7.2575],
-      },
-    },
-    images: [],
-    search_keywords: ["suzuki", "swift", "hatchback"],
-  },
+  ...Array.from({ length: 40 }).map((_, i) => {
+    const motorBrands = ["Yamaha", "Honda", "Suzuki", "Kawasaki"];
+    const motorModels = ["NMAX", "Vario", "Beat", "Aerox", "GSX", "R15", "KLX"];
 
-  {
-    make: "Suzuki",
-    model: "XL7",
-    year: 2022,
-    price: 240000000,
-    mileage: 40000,
-    condition: "used",
-    transmission: "automatic",
-    fuel_type: "petrol",
-    color: "grey",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Jakarta",
-      province: "DKI Jakarta",
-      coordinates: {
-        type: "Point",
-        coordinates: [106.865, -6.2297],
-      },
-    },
-    images: [],
-    search_keywords: ["suzuki", "xl7", "suv"],
-  },
+    const make = motorBrands[Math.floor(Math.random() * motorBrands.length)];
+    const model = motorModels[Math.floor(Math.random() * motorModels.length)];
 
-  {
-    make: "Honda",
-    model: "Civic",
-    year: 2021,
-    price: 450000000,
-    mileage: 30000,
-    condition: "used",
-    transmission: "automatic",
-    fuel_type: "petrol",
-    color: "black",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Jakarta",
-      province: "DKI Jakarta",
-      coordinates: {
-        type: "Point",
-        coordinates: [106.8166, -6.1805],
+    return {
+      make,
+      model,
+      year: 2017 + Math.floor(Math.random() * 8),
+      price: 15000000 + Math.floor(Math.random() * 80000000),
+      mileage: 5000 + Math.floor(Math.random() * 50000),
+      condition: Math.random() > 0.2 ? "used" : "new",
+      transmission: "manual",
+      fuel_type: "petrol",
+      color: ["black", "red", "white", "blue"][Math.floor(Math.random() * 4)],
+      category: { id: "motorcycle", name: "Motorcycle" },
+      location: {
+        city: "Jakarta",
+        province: "DKI Jakarta",
+        coordinates: {
+          type: "Point",
+          coordinates: [
+            106.8456 + Math.random() * 0.01,
+            -6.2088 + Math.random() * 0.01,
+          ],
+        },
       },
-    },
-    images: [],
-    search_keywords: ["honda", "civic", "sedan"],
-  },
-
-  {
-    make: "Honda",
-    model: "CR-V",
-    year: 2022,
-    price: 520000000,
-    mileage: 25000,
-    condition: "used",
-    transmission: "automatic",
-    fuel_type: "petrol",
-    color: "white",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Bandung",
-      province: "Jawa Barat",
-      coordinates: {
-        type: "Point",
-        coordinates: [107.6191, -6.9175],
-      },
-    },
-    images: [],
-    search_keywords: ["honda", "crv", "suv"],
-  },
-
-  {
-    make: "Mitsubishi",
-    model: "Xpander",
-    year: 2021,
-    price: 260000000,
-    mileage: 50000,
-    condition: "used",
-    transmission: "automatic",
-    fuel_type: "petrol",
-    color: "silver",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Surabaya",
-      province: "Jawa Timur",
-      coordinates: {
-        type: "Point",
-        coordinates: [112.7688, -7.2458],
-      },
-    },
-    images: [],
-    search_keywords: ["mitsubishi", "xpander", "mpv"],
-  },
-
-  {
-    make: "BMW",
-    model: "320i",
-    year: 2021,
-    price: 800000000,
-    mileage: 20000,
-    condition: "used",
-    transmission: "automatic",
-    fuel_type: "petrol",
-    color: "blue",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Jakarta",
-      province: "DKI Jakarta",
-      coordinates: {
-        type: "Point",
-        coordinates: [106.8456, -6.2088],
-      },
-    },
-    images: [],
-    search_keywords: ["bmw", "320i", "luxury"],
-  },
-
-  {
-    make: "Mercedes-Benz",
-    model: "C200",
-    year: 2022,
-    price: 900000000,
-    mileage: 15000,
-    condition: "used",
-    transmission: "automatic",
-    fuel_type: "petrol",
-    color: "black",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Jakarta",
-      province: "DKI Jakarta",
-      coordinates: {
-        type: "Point",
-        coordinates: [106.83, -6.195],
-      },
-    },
-    images: [],
-    search_keywords: ["mercedes", "c200", "luxury"],
-  },
-
-  {
-    make: "Daihatsu",
-    model: "Xenia",
-    year: 2019,
-    price: 170000000,
-    mileage: 80000,
-    condition: "used",
-    transmission: "manual",
-    fuel_type: "petrol",
-    color: "white",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Bandung",
-      province: "Jawa Barat",
-      coordinates: {
-        type: "Point",
-        coordinates: [107.62, -6.92],
-      },
-    },
-    images: [],
-    search_keywords: ["daihatsu", "xenia", "mpv"],
-  },
-
-  {
-    make: "Hyundai",
-    model: "Creta",
-    year: 2023,
-    price: 350000000,
-    mileage: 10000,
-    condition: "used",
-    transmission: "automatic",
-    fuel_type: "petrol",
-    color: "red",
-    category: { id: "car", name: "Car" },
-    location: {
-      city: "Jakarta",
-      province: "DKI Jakarta",
-      coordinates: {
-        type: "Point",
-        coordinates: [106.86, -6.2],
-      },
-    },
-    images: [],
-    search_keywords: ["hyundai", "creta", "suv"],
-  },
+      images: [],
+      search_keywords: [make.toLowerCase(), model.toLowerCase(), "motorcycle"],
+    };
+  }),
 ];
+
+export default listingsSeed;
 
 const runSeed = async () => {
   try {
@@ -290,12 +110,16 @@ const runSeed = async () => {
     await Listing.deleteMany({});
     console.log("🧹 Old data cleared");
 
-    const preparedData = listingsSeed.map((item) => ({
-      ...item,
-      slug: slugify(`${item.make} ${item.model} ${item.year}`, {
-        lower: true,
-      }),
-    }));
+    const preparedData = listingsSeed.map((item) => {
+      const random = Math.floor(Math.random() * 100000);
+
+      return {
+        ...item,
+        slug: slugify(`${item.make}-${item.model}-${item.year}-${random}`, {
+          lower: true,
+        }),
+      };
+    });
 
     await Listing.insertMany(preparedData);
 
