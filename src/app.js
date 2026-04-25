@@ -19,9 +19,7 @@ app.use((req, res, next) => {
 
 // test route
 app.get("/", (req, res) => {
-  res.json({
-    message: "API is running 🚀",
-  });
+  res.status(200).send("OK");
 });
 
 app.use("/api/listings", listingRoute);
