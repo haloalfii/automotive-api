@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
+import testRoute from "./routes/test.route.js";
+
 dotenv.config();
 
 const app = express();
@@ -16,5 +18,7 @@ app.get("/", (req, res) => {
     message: "API is running 🚀",
   });
 });
+
+app.use("/api", testRoute);
 
 export default app;
